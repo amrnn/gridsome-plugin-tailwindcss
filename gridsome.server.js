@@ -22,23 +22,25 @@ function TailwindPlugin(api, options) {
   const purgecss = require('@fullhuman/postcss-purgecss')(purgeConfig)
 
   api.chainWebpack(config => {
-    config.module
-      .rule('css')
-      .oneOf('normal')
-      .use('postcss-loader')
-      .tap(options => {
-        shouldImport && options.plugins.push(postcssImport)
+    ['css', 'scss', 'sass', 'less', 'stylus'].forEach(lang => {
+      config.module
+        .rule(lang)
+        .oneOf('normal')
+        .use('postcss-loader')
+        .tap(options => {
+          shouldImport && options.plugins.push(postcssImport)
 
-        options.plugins.push(tailwind)
+          options.plugins.push(tailwind)
 
-        shouldTimeTravel && options.plugins.push(postcssPresetEnv)
+          shouldTimeTravel && options.plugins.push(postcssPresetEnv)
 
-        process.env.NODE_ENV === 'production' &&
-          shouldPurge &&
-          options.plugins.push(purgecss)
+          process.env.NODE_ENV === 'production' &&
+            shouldPurge &&
+            options.plugins.push(purgecss)
 
-        return options
-      })
+          return options
+        })
+    })
   })
 }
 
