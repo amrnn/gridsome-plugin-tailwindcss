@@ -22,7 +22,7 @@ function TailwindPlugin(api, options) {
   const purgecss = require('@fullhuman/postcss-purgecss')(purgeConfig)
 
   api.chainWebpack(config => {
-    ['css', 'scss', 'sass', 'less', 'stylus'].forEach(lang => {
+    ['css', 'scss', 'sass', 'less', 'stylus', 'postcss'].forEach(lang => {
       config.module
         .rule(lang)
         .oneOf('normal')
